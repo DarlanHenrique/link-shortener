@@ -5,45 +5,37 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Link;
+use Illuminate\Support\Str;
+
 class LinkController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'url' => ['required', 'url:http,https'],
+        ]);
+
+        do {
+            $short_code = Str::random(6);
+        } while (Link::where('short_code', $short_code)->exists());
+
+        $link = Link::create([
+            'original_url' => $request->url,
+            'short_code' => $short_code,
+        ]);
+
+        return response()->json([
+            'short_url' => url($link->short_code)
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function redirect(string $short_code)
     {
-        //
-    }
+        $link = Link::where('short_code', $short_code)->firstOrFail();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        $link->increment('visits');
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->away($link->original_url);
     }
 }
