@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Api\LinkController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserLinkController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -16,6 +16,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('link-shortener', function () {
         return Inertia::render('link-shortener');
     })->name('link-shortener');
+    Route::get('/meus-links', [UserLinkController::class, 'index'])->name('my-links');
+
 });
 
 

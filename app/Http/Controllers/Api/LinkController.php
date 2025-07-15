@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Models\Link;
 use Illuminate\Support\Str;
+
 
 class LinkController extends Controller
 {
@@ -23,6 +23,7 @@ class LinkController extends Controller
         $link = Link::create([
             'original_url' => $request->url,
             'short_code' => $short_code,
+            'user_id' => $request->user()->id,
         ]);
 
         return response()->json([

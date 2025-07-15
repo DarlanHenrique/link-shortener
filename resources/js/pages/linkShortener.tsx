@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // 1. Importe o useEffect
 import axios from 'axios';
 
-export default function LinkShortener() { 
+export default function LinkShortener() {
     const [url, setUrl] = useState<string>('');
     const [shortUrl, setShortUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -11,6 +11,17 @@ export default function LinkShortener() {
     interface ShortenLinkResponse {
         short_url: string;
     }
+
+    // 2. ADICIONADO: Busca o cookie de segurança (CSRF) ao carregar o componente.
+    useEffect(() => {
+        const getCsrfToken = async () => {
+            // Garante que a URL base para o cookie é a mesma da sua API
+            await axios.get(`${import.meta.env.VITE_API_BASE_URL}/sanctum/csrf-cookie`, {
+                withCredentials: true,
+            });
+        };
+        getCsrfToken().catch(console.error);
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
@@ -22,14 +33,20 @@ export default function LinkShortener() {
         try {
             const response = await axios.post<ShortenLinkResponse>(
                 `${import.meta.env.VITE_API_BASE_URL}/api/links`,
-                { url }
+                { url },
+                // 3. ADICIONADO: Envia os cookies de autenticação com a requisição.
+                { withCredentials: true }
             );
             setShortUrl(response.data.short_url);
         } catch (err) {
             if (axios.isAxiosError(err) && err.response) {
-                setError(err.response.data.message || 'Ocorreu um erro. Verifique se a URL é válida.');
+                if (err.response.status === 401 || err.response.status === 419) {
+                    setError('Sua sessão expirou. Por favor, atualize a página.');
+                } else {
+                    setError(err.response.data.message || 'Ocorreu um erro. Verifique se a URL é válida.');
+                }
             } else {
-                setError('Não foi possível conectar ao servidor. Verifique se ele está rodando.');
+                setError('Não foi possível conectar ao servidor.');
             }
             console.error(err);
         } finally {
@@ -80,7 +97,7 @@ export default function LinkShortener() {
                                 Processando...
                             </>
                         ) : (
-                            "Encurtar Link" 
+                            "Encurtar Link"
                         )}
                     </button>
                 </form>

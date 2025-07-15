@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('original_url');
             $table->string('short_code')->unique();
             $table->unsignedBigInteger('visits')->default(0);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,5 +27,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('links');
+        Schema::table('links', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
+        });
     }
 };
