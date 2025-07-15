@@ -6,15 +6,15 @@ import LinkShortener from './linkShortener';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
-        href: '/dashboard',
+        title: 'Link Shortener',
+        href: '/link-shortener',
     },
 ];
 
 export default function Dashboard() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head title="Link Shortener" />
             <LinkShortener />
         </AppLayout>
     );
