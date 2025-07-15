@@ -21,6 +21,11 @@ const mainNavItems: NavItem[] = [
         href: '/link-shortener',
         icon: LayoutGrid,
     },
+    {
+        title: 'My Links',
+        href: '/my-links',
+        icon: Folder,
+    },
 ];
 
 const rightNavItems: NavItem[] = [

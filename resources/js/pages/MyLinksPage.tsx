@@ -1,7 +1,8 @@
 import { Head } from '@inertiajs/react';
-
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
+import { Trash } from 'lucide-react';
+
 interface User {
     id: number;
     name: string;
@@ -24,8 +25,8 @@ interface MyLinksPageProps {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Link Shortener',
-        href: '/link-shortener',
+        title: 'My Links',
+        href: '/my-links',
     },
 ];
 
@@ -67,7 +68,9 @@ export default function MyLinksPage({ auth, links }: MyLinksPageProps) {
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-bold">{link.visits}</td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                        <a href="#" className="text-red-600 hover:text-red-900 ml-4">Deletar</a>
+                                                        <a href="#" className="text-red-600 hover:text-red-900 ml-4">
+                                                            <Trash className="h-4 w-4" />
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             ))}
