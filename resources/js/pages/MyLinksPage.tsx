@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react'; // 1. Importe o <Link>
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Trash } from 'lucide-react';
@@ -33,7 +33,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function MyLinksPage({ auth, links }: MyLinksPageProps) {
 
     const fullShortUrl = (short_code: string): string => {
-        return `${window.location.origin}/${short_code}`;
+        // Garante que a URL base não tenha uma barra no final
+        const origin = window.location.origin.replace(/\/$/, '');
+        return `${origin}/${short_code}`;
     };
 
     return (
@@ -68,9 +70,17 @@ export default function MyLinksPage({ auth, links }: MyLinksPageProps) {
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-bold">{link.visits}</td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                        <a href="#" className="text-red-600 hover:text-red-900 ml-4">
+                                                        {/* 2. Substitua o <a> por <Link> */}
+                                                        <Link
+                                                            href={route('links.destroy', link.id)}
+                                                            method="delete"
+                                                            as="button"
+                                                            className="text-red-600 hover:text-red-900"
+                                                            // Adiciona uma confirmação antes de enviar a requisição
+                                                            onBefore={() => confirm('Tem certeza que deseja excluir este link?')}
+                                                        >
                                                             <Trash className="h-4 w-4" />
-                                                        </a>
+                                                        </Link>
                                                     </td>
                                                 </tr>
                                             ))}

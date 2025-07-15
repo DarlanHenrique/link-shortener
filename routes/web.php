@@ -17,6 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('link-shortener');
     })->name('link-shortener');
     Route::get('/my-links', [UserLinkController::class, 'index'])->name('my-links');
+    Route::delete('/links/{link}', [LinkController::class, 'destroy'])->name('links.destroy');
 
 });
 

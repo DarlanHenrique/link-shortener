@@ -39,4 +39,15 @@ class LinkController extends Controller
 
         return redirect()->away($link->original_url);
     }
+
+    public function destroy(Request $request, Link $link)
+    {
+        if ($request->user()->id !== $link->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $link->delete();
+
+        return redirect()->back()->with('success', 'Link excluído com sucesso!');
+    }
 }
