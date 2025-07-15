@@ -45,7 +45,7 @@ export default function LinkShortener() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-indigo-100 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+        <div className="h-auto from-sky-50 via-white to-indigo-100 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
             <div className="max-w-md w-full bg-white shadow-lg rounded-xl p-6 sm:p-8 space-y-6 backdrop-blur-sm bg-opacity-90 transform transition-all duration-300 hover:shadow-2xl">
                 <div className="text-center mb-6">
                     <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Encurtador de Links</h1>
