@@ -16,7 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('link-shortener', function () {
         return Inertia::render('link-shortener');
     })->name('link-shortener');
-    Route::get('/meus-links', [UserLinkController::class, 'index'])->name('my-links');
+    Route::get('/my-links', [UserLinkController::class, 'index'])->name('my-links');
 
 });
 

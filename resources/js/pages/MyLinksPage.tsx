@@ -1,19 +1,13 @@
-import React, { ReactNode } from 'react';
 import { Head } from '@inertiajs/react';
 
-// Vamos continuar usando o AppLayoutTemplate diretamente para não mexer no app-layout.tsx
-import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
-
-// --- Tipagens Definidas Localmente Dentro Deste Arquivo ---
-
-// 1. Definimos a interface para o objeto 'User' aqui mesmo.
+import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types';
 interface User {
     id: number;
     name: string;
     email: string;
 }
 
-// 2. Definimos a interface para um 'Link'.
 interface Link {
     id: number;
     original_url: string;
@@ -21,8 +15,6 @@ interface Link {
     visits: number;
 }
 
-// 3. Esta é a mudança principal: criamos a interface de props da página
-//    declarando 'auth' e 'links' diretamente, sem usar 'PageProps'.
 interface MyLinksPageProps {
     auth: {
         user: User;
@@ -30,7 +22,13 @@ interface MyLinksPageProps {
     links: Link[];
 }
 
-// O componente agora usa nossa interface local MyLinksPageProps
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Link Shortener',
+        href: '/link-shortener',
+    },
+];
+
 export default function MyLinksPage({ auth, links }: MyLinksPageProps) {
 
     const fullShortUrl = (short_code: string): string => {
@@ -38,12 +36,8 @@ export default function MyLinksPage({ auth, links }: MyLinksPageProps) {
     };
 
     return (
-        <AppLayoutTemplate
-            user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Meus Links (CRUD)</h2>}
-        >
-            <Head title="Meus Links" />
-
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="My Links" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -73,7 +67,6 @@ export default function MyLinksPage({ auth, links }: MyLinksPageProps) {
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-bold">{link.visits}</td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                        <a href="#" className="text-indigo-600 hover:text-indigo-900">Editar</a>
                                                         <a href="#" className="text-red-600 hover:text-red-900 ml-4">Deletar</a>
                                                     </td>
                                                 </tr>
@@ -88,6 +81,6 @@ export default function MyLinksPage({ auth, links }: MyLinksPageProps) {
                     </div>
                 </div>
             </div>
-        </AppLayoutTemplate>
+        </AppLayout>
     );
 }
